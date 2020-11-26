@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <title>HSL Clock</title>
+    <meta name="description" content="HSL Clock presents the time using an HSL-formatted color using the luminosity, hue, and saturation as the 24-hour, minute, and second hand, respectively." />
+    <style>
+      * {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+      }
+      body {
+        background: #000;
+        color: #fff;
+        display: table;
+        font-family: "Lucida Console", "Lucida Sans Typewriter", Monaco, "Bitstream Vera Sans Mono", monospace;
+        text-shadow: 3px 3px 3px #000;
+      }
+      #hsl-time {
+        display: table-cell;
+        font-size: 4.5em;
+        text-align: center;
+        vertical-align: middle;
+      }
+      .credits {
+        bottom: 10px;
+        height: auto;
+        left: 10px;
+        position: absolute;
+        width: auto;
+      }
+      .credits a {
+        color: #fff;
+        text-decoration: none;
+      }
+      .credits a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="hsl-time">You'll need to enable Javascript to view this page correctly.</div>
+    <div class="credits">
+      Created by <a href="https://twitter.com/davidlwatsonjr">@davidlwatsonjr</a>. Inspired by <a href="http://www.jacopocolo.com/hexclock/">Hex clock</a>.
+    </div>
+  </body>
+  <script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create','UA-28395637-1','auto');ga('send','pageview');</script>
+  <script>
+    var getHSLColorFromTodaysTime = function(dateToConvert) {
+      var millisecondsInAMinute = 60 * 1000;
+      var millisecondsInAnHour = 60 * 60 * 1000;
+      var millisecondsInADay = 24 * 60 * 60 * 1000;
+
+      var millisecondsSinceMidnight = (dateToConvert.getHours() * 60 * 60 * 1000) + (dateToConvert.getMinutes() * 60) * 1000 + (dateToConvert.getSeconds() * 1000) + dateToConvert.getMilliseconds();
+      var millisecondsSinceLastHour = (dateToConvert.getMinutes() * 60 * 1000) + (dateToConvert.getSeconds() * 1000) + dateToConvert.getMilliseconds();
+      var millisecondsSinceLastMinute = (dateToConvert.getSeconds() * 1000) + dateToConvert.getMilliseconds();
+
+      var fractionOfTodayGone = millisecondsSinceMidnight / millisecondsInADay;
+      var fractionOfThisHourGone = millisecondsSinceLastHour / millisecondsInAnHour;
+      var fractionOfThisMinuteGone = millisecondsSinceLastMinute / millisecondsInAMinute;
+
+      var hue = Math.round(fractionOfThisHourGone * 360);
+      var saturation = Math.round(2 * Math.abs((fractionOfThisMinuteGone - .5) * 100));
+      var luminosity = Math.round((-2 * Math.abs(fractionOfTodayGone - .5) + 1) * 100);
+
+      var hslColorFromTodaysTime = 'hsl(' + hue + ', ' + saturation + '%, ' + luminosity + '%)';
+
+      return hslColorFromTodaysTime;
+    };
+
+    var hslTimeElement = document.getElementById('hsl-time');
+
+    var updateBackgroundEveryXSeconds = function(x) {
+      var hslColorFromTodaysTime = getHSLColorFromTodaysTime(new Date());
+      document.body.style.backgroundColor = hslColorFromTodaysTime;
+      hslTimeElement.textContent = hslColorFromTodaysTime;
+      window.setTimeout(function() {
+        updateBackgroundEveryXSeconds(x);
+      }, x * 1000);
+    };
+
+    updateBackgroundEveryXSeconds(0.01);
+  </script>
+</html>
