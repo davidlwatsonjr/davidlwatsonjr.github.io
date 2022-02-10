@@ -1,0 +1,43 @@
+html, body {
+    background-color: #f0f0f0;
+    color: #222;
+    font-family: "Roboto Condensed", Arial, Helvetica,sans-serif;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+
+#stateMachineView {
+    display: none;
+    text-align: center;
+}
+
+#beginButton {
+    background-color: #0053b9;
+    border: 0;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: 600;
+    padding: 16px;
+}
+
+#stateOutput {
+    font-size: 288px;
+    font-weight: bold;
+}
+
+.state-machine-on #stateMachineView {
+    display: block;
+}
+
+.state-machine-on #beginButton {
+    display: none;
+}
