@@ -1,5 +1,5 @@
 angular.module('last.fmDupRemoverApp').factory('lastFM', ['$http', function ($http) {
-  var baseURL = '/apis/last.fm-dup-remover/index.php/';
+  var baseURL = 'https://davidlwatsonjr.com/apis/last.fm-dup-remover/index.php/';
 
   return {
     getSession: function () {
