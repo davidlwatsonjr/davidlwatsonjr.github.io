@@ -1,0 +1,45 @@
+<div class="hero-unit">
+  <h1>Let's remove some Last.fm Scrobble duplication!</h1>
+
+  <a
+    href="http://www.last.fm/api/auth/?api_key={{ apiAccount.apiKey }}"
+    ng-hide="communicating || (lastFmSessionInfo && lastFmSessionInfo.name)">Authenticate with Last.FM</a>
+
+  <div ng-show="checkingAuthentication">Checking Authentication...</div>
+
+  <div ng-show="retreivingTracks">
+    Retrieving recent tracks for {{ lastFmSessionInfo.name }}...
+    <button ng-click="stopRetrieving = true" ng-hide="stopRetrieving">Stop Retrieving</button>
+  </div>
+
+  <p>Pages Loaded: <span ng-bind="recentTracksMeta.page">0</span> of <span ng-bind="recentTracksMeta.totalPages">0</span></p>
+
+  <p>Tracks Loaded: <span ng-bind="recentTracks.length">0</span> of <span ng-bind="recentTracksMeta.total">0</span></p>
+
+  <p><input ng-model="duplicateThreshold" /></p>
+
+  <p>There are <span ng-bind="duplicateTracks.length">0</span> duplicates.</p>
+
+  <table>
+    <thead>
+      <tr>
+        <td>Artist</td>
+        <td>Song</td>
+        <td>Date (UTS)</td>
+        <td>Date</td>
+        <td>Link to page</td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        ng-repeat="track in duplicateTracks">
+        <td class="artist" ng-bind="track.artist['#text']"></td>
+        <td class="song" ng-bind="track.name"></td>
+        <td class="uts-time" ng-bind="track.date.uts"></td>
+        <td class="date" ng-bind="track.date['#text']"></td>
+        <td><a href="http://www.last.fm/user/{{ lastFmSessionInfo.name }}/library?page={{ window.Math.ceil(track.index / 50) }}" target="_blank" title="A link to Last.Fm where you can remove this scrobble">Remove</a></td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
