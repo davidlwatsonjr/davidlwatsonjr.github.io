@@ -2,7 +2,7 @@
   <h1>Let's remove some Last.fm Scrobble duplication!</h1>
 
   <a
-    href="http://www.last.fm/api/auth/?api_key={{ apiAccount.apiKey }}"
+    href="{{ lastFmApi.apiUrl }}/auth/connect"
     ng-hide="communicating || (lastFmSessionInfo && lastFmSessionInfo.name)">Authenticate with Last.FM</a>
 
   <div ng-show="checkingAuthentication">Checking Authentication...</div>

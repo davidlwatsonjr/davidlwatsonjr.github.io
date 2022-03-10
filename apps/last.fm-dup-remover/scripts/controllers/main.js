@@ -1,10 +1,7 @@
 'use strict';
 
 angular.module('last.fmDupRemoverApp').controller('MainCtrl', function ($scope, lastFM) {
-  $scope.apiAccount = {
-    'apiKey': '0f77640817004a0630133cff90dc70fe'
-  };
-
+  $scope.lastFmApi = lastFM;
   $scope.recentTracks = [];
   $scope.page = 1;
   $scope.duplicateThreshold = 2;
@@ -18,7 +15,8 @@ angular.module('last.fmDupRemoverApp').controller('MainCtrl', function ($scope, 
     $scope.communicating = true;
     $scope.retreivingTracks = true;
 
-    lastFM.get('user_getRecentTracks', {user: $scope.lastFmSessionInfo.name, limit: 200, page: $scope.page})
+    lastFM
+      .get('user_getRecentTracks', { user: $scope.lastFmSessionInfo.name, limit: 200, page: $scope.page })
       .then(function (data) {
         $scope.communicating = false;
         $scope.retreivingTracks = false;
@@ -53,7 +51,7 @@ angular.module('last.fmDupRemoverApp').controller('MainCtrl', function ($scope, 
     computeRecentTracks();
   });
 
-  var computeRecentTracks = function() {
+  var computeRecentTracks = function () {
     var trackIndex, track;
 
     $scope.duplicateTracks = [];
@@ -72,22 +70,21 @@ angular.module('last.fmDupRemoverApp').controller('MainCtrl', function ($scope, 
     index = parseInt(index, 10);
 
     var thisTrack = $scope.recentTracks[index],
-        nextTrack = $scope.recentTracks[index + 1],
-        thisDate, nextDate;
+      nextTrack = $scope.recentTracks[index + 1],
+      thisDate,
+      nextDate;
 
-    if (angular.isObject(thisTrack) &&
-        angular.isObject(thisTrack.date) &&
-        thisTrack.date.uts) {
+    if (angular.isObject(thisTrack) && angular.isObject(thisTrack.date) && thisTrack.date.uts) {
       thisDate = parseInt(thisTrack.date.uts, 10);
     }
 
-    if (angular.isObject(nextTrack) &&
-        angular.isObject(nextTrack.date) &&
-        nextTrack.date.uts) {
+    if (angular.isObject(nextTrack) && angular.isObject(nextTrack.date) && nextTrack.date.uts) {
       nextDate = parseInt(nextTrack.date.uts, 10);
-      if ((Math.abs(nextDate - thisDate) < $scope.duplicateThreshold) && 
-          (nextTrack.mbid === thisTrack.mbid) &&
-          (nextTrack.name === thisTrack.name)) {
+      if (
+        Math.abs(nextDate - thisDate) < $scope.duplicateThreshold &&
+        nextTrack.mbid === thisTrack.mbid &&
+        nextTrack.name === thisTrack.name
+      ) {
         return true;
       }
     }
