@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Notepad</title>
+        <style>
+            body {
+                margin: 0;
+                overflow: hidden;
+            }
+
+            #notepad {
+                background-color: #1e1e1e;
+                border: none;
+                box-sizing: border-box;
+                font-family: Consolas, 'Courier New', monospace;
+                font-size: 16px;
+                color: #d4d4d2;
+                height: 100vh;
+                overflow-y: scroll;
+                padding: .25in 1in;
+                width: 100%;
+            }
+
+        </style>
+    </head>
+    <body>
+        <textarea name="notepad" id="notepad" cols="120" rows="3000"></textarea>
+    </body>
+    <script>
+        const notepad = document.getElementById('notepad');
+        notepad.value = localStorage.getItem('notepad');
+        notepad.focus();
+        notepad.addEventListener('input', () => {
+            localStorage.setItem('notepad', notepad.value);
+        });
+    </script>
+</html>
