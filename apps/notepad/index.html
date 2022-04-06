@@ -34,7 +34,11 @@
         notepad.value = localStorage.getItem('notepad');
         notepad.focus();
         notepad.addEventListener('input', () => {
-            localStorage.setItem('notepad', notepad.value);
+            if (notepad.value.length > 0) {
+                localStorage.setItem('notepad', notepad.value);
+            } else {
+                localStorage.removeItem('notepad');
+            }
         });
     </script>
 </html>
